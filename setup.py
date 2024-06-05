@@ -34,7 +34,7 @@ REQUIRED_PACKAGES = [
     'mir_eval == 0.7',
     'note-seq == 0.0.3',
     'numba == 0.49.1',
-    'numpy == 1.21.6',
+    'numpy == 1.22.0',
     'Pillow == 10.3.0',
     'pretty_midi == 0.2.9',
     'pygtrie == 2.5.0',
@@ -48,7 +48,7 @@ REQUIRED_PACKAGES = [
     'tensorflow-datasets == 4.6.0',
     'tensorflow-probability == 0.17.0',
     'tf_slim == 1.1.0',
-    'wheel == 0.37.1',
+    'wheel == 0.38.1',
 ]
 
 EXTRAS_REQUIRE = {
