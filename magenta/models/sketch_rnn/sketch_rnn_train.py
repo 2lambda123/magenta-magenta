@@ -125,7 +125,7 @@ def load_dataset(data_dir, model_params, inference_mode=False):
     if data_dir.startswith('http://') or data_dir.startswith('https://'):
       data_filepath = '/'.join([data_dir, dataset])
       tf.logging.info('Downloading %s', data_filepath)
-      response = requests.get(data_filepath)
+      response = requests.get(data_filepath, timeout=60)
       data = np.load(six.BytesIO(response.content), encoding='latin1')
     else:
       data_filepath = os.path.join(data_dir, dataset)
