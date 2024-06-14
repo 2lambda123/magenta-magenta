@@ -22,9 +22,9 @@ import argparse
 import glob
 import ntpath
 import os
-import random
 import shutil
 import sys
+import secrets
 
 PARSER = argparse.ArgumentParser(description='')
 PARSER.add_argument(
@@ -76,7 +76,7 @@ def random_pick(path_in, path_out, limit, delete):
   print('found ', file_count, 'files')
   if limit > 0:
     print('will use limit of', limit, 'files')
-    random.shuffle(files)
+    secrets.SystemRandom().shuffle(files)
     files = files[:limit]
 
   i = 0

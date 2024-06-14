@@ -17,11 +17,11 @@
 import collections
 import copy
 import functools
-import random
 import sys
 import tensorflow.compat.v1 as tf
 from tensorflow.compat.v1 import estimator as tf_estimator
 import tf_slim
+import secrets
 
 
 # Should not be called from within the graph to avoid redundant summaries.
@@ -229,7 +229,7 @@ def evaluate(master,
     # of the dataset.
     def transcription_data(params, *args, **kwargs):
       assert not args
-      skip_n_initial_records = random.randint(0, max_records_to_skip)
+      skip_n_initial_records = secrets.SystemRandom().randint(0, max_records_to_skip)
       tf.logging.info('Skipping %d initial record(s)', skip_n_initial_records)
       return transcription_data_base(
           params=params,

@@ -30,7 +30,6 @@ from __future__ import print_function
 
 import collections
 import os
-import random
 import urllib
 
 from magenta.models.rl_tuner import note_rnn_loader
@@ -45,6 +44,7 @@ from six.moves import range  # pylint: disable=redefined-builtin
 from six.moves import reload_module  # pylint: disable=redefined-builtin
 from six.moves import urllib  # pylint: disable=redefined-builtin
 import tensorflow.compat.v1 as tf
+import secrets
 
 # Note values of special actions.
 NOTE_OFF = 0
@@ -700,7 +700,7 @@ class RLTuner(object):
     action_softmax = np.reshape(action_softmax, (self.num_actions))
     action = np.reshape(action, (self.num_actions))
 
-    if enable_random and random.random() < exploration_p:
+    if enable_random and secrets.SystemRandom().random() < exploration_p:
       note = self.get_random_note()
       return note, note, reward_scores
     else:
@@ -750,7 +750,7 @@ class RLTuner(object):
         return
 
       # Sample experience.
-      samples = random.sample(range(len(self.experience)),
+      samples = secrets.SystemRandom().sample(range(len(self.experience)),
                               self.dqn_hparams.minibatch_size)
       samples = [self.experience[i] for i in samples]
 
