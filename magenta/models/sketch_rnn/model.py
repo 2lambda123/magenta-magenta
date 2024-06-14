@@ -14,12 +14,11 @@
 
 """Sketch-RNN Model."""
 
-import random
-
 from magenta.contrib import training as contrib_training
 from magenta.models.sketch_rnn import rnn
 import numpy as np
 import tensorflow.compat.v1 as tf
+import secrets
 
 
 def copy_hparams(hparams):
@@ -429,9 +428,9 @@ def sample(sess, model, seq_len=250, temperature=1.0, greedy_mode=False,
 
     [o_pi, o_mu1, o_mu2, o_sigma1, o_sigma2, o_corr, o_pen, next_state] = params
 
-    idx = get_pi_idx(random.random(), o_pi[0], temp, greedy)
+    idx = get_pi_idx(secrets.SystemRandom().random(), o_pi[0], temp, greedy)
 
-    idx_eos = get_pi_idx(random.random(), o_pen[0], temp, greedy)
+    idx_eos = get_pi_idx(secrets.SystemRandom().random(), o_pen[0], temp, greedy)
     eos = [0, 0, 0]
     eos[idx_eos] = 1
 

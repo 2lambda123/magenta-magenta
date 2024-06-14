@@ -18,7 +18,6 @@ import functools
 import hashlib
 import logging
 import os
-import random
 import typing
 
 import apache_beam as beam
@@ -32,6 +31,7 @@ from note_seq import sequences_lib
 import numpy as np
 from tensor2tensor.data_generators import generator_utils
 import tensorflow.compat.v1 as tf
+import secrets
 
 # TODO(iansimon): this should probably be defined in the problem
 SCORE_BPM = 120.0
@@ -162,7 +162,7 @@ class ExtractExamplesDoFn(beam.DoFn):
     # deterministic.
     key, ns_str = kv
     m = hashlib.md5(key.encode('utf-8'))
-    random.seed(int(m.hexdigest(), 16))
+    secrets.SystemRandom().seed(int(m.hexdigest(), 16))
 
     # Deserialize NoteSequence proto.
     ns = note_seq.NoteSequence.FromString(ns_str)
@@ -201,7 +201,7 @@ class ExtractExamplesDoFn(beam.DoFn):
               # It's okay if the next hop time is invalid (in which case we'll
               # just stop).
               max_offset = self._max_hop_size_seconds
-            offset = random.uniform(self._min_hop_size_seconds, max_offset)
+            offset = secrets.SystemRandom().uniform(self._min_hop_size_seconds, max_offset)
             hop_times.append(hop_times[-1] + offset)
           # Split at the chosen hop times (ignoring zero and the final invalid
           # time).
@@ -305,7 +305,7 @@ class ExtractExamplesDoFn(beam.DoFn):
             len(example_dict['targets']) > self._random_crop_length):
           # Take a random crop of the encoded performance.
           max_offset = len(example_dict['targets']) - self._random_crop_length
-          offset = random.randrange(max_offset + 1)
+          offset = secrets.SystemRandom().randrange(max_offset + 1)
           example_dict['targets'] = example_dict['targets'][
               offset:offset + self._random_crop_length]
 
@@ -504,7 +504,7 @@ class ConditionalExtractExamplesDoFn(beam.DoFn):
     # deterministic.
     key, ns_str = kv
     m = hashlib.md5(key.encode('utf-8'))
-    random.seed(int(m.hexdigest(), 16))
+    secrets.SystemRandom().seed(int(m.hexdigest(), 16))
 
     # Deserialize NoteSequence proto.
     ns = note_seq.NoteSequence.FromString(ns_str)
@@ -530,7 +530,7 @@ class ConditionalExtractExamplesDoFn(beam.DoFn):
         # chopping sequence into length 2048 (throw out shorter sequences)
         if len(seq) >= 2048:
           max_offset = len(seq) - 2048
-          offset = random.randrange(max_offset + 1)
+          offset = secrets.SystemRandom().randrange(max_offset + 1)
           cropped_seq = seq[offset:offset + 2048]
 
           example_dict = {
@@ -578,7 +578,7 @@ class ConditionalExtractExamplesDoFn(beam.DoFn):
                 transpose_range.remove(0)  # make sure you transpose
               except ValueError:
                 pass
-              transpose_amount = random.choice(transpose_range)
+              transpose_amount = secrets.choice(transpose_range)
               augmented_ns, _ = sequences_lib.transpose_note_sequence(
                   decoded_ns, transpose_amount, min_allowed_pitch=21,
                   max_allowed_pitch=108, in_place=False)

@@ -19,13 +19,13 @@ from __future__ import division
 from __future__ import print_function
 
 import math
-import random
 import subprocess
 import tempfile
 
 from magenta.contrib import training as contrib_training
 import sox
 import tensorflow.compat.v1 as tf
+import secrets
 
 # The base pipeline is a list of stages, each of which consists of a name
 # (corresponding to a SoX function) and a dictionary of parameters with name
@@ -107,11 +107,11 @@ class AudioTransformParameter(object):
       A value drawn uniformly at random between `min_value` and `max_value`.
     """
     if self.scale == 'linear':
-      return random.uniform(self.min_value, self.max_value)
+      return secrets.SystemRandom().uniform(self.min_value, self.max_value)
     else:
       log_min_value = math.log(self.min_value)
       log_max_value = math.log(self.max_value)
-      return math.exp(random.uniform(log_min_value, log_max_value))
+      return math.exp(secrets.SystemRandom().uniform(log_min_value, log_max_value))
 
 
 class AudioTransformStage(object):
@@ -243,7 +243,7 @@ def transform_wav_audio(wav_audio, hparams, pipeline=None):
       temp_input.flush()
 
       # Add noise before all other pipeline steps.
-      noise_vol = random.uniform(hparams.audio_transform_min_noise_vol,
+      noise_vol = secrets.SystemRandom().uniform(hparams.audio_transform_min_noise_vol,
                                  hparams.audio_transform_max_noise_vol)
       add_noise(temp_input.name, temp_input_with_noise.name, noise_vol,
                 hparams.audio_transform_noise_type)

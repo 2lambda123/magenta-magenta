@@ -18,11 +18,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import random
-
 from note_seq.protobuf import music_pb2
 import numpy as np
 import tensorflow.compat.v1 as tf
+import secrets
 
 
 def load_noteseqs(fp,
@@ -66,7 +65,7 @@ def load_noteseqs(fp,
     note_sequence_ordered = list(note_sequence.notes)
 
     if randomize_chord_order:
-      random.shuffle(note_sequence_ordered)
+      secrets.SystemRandom().shuffle(note_sequence_ordered)
       note_sequence_ordered = sorted(
           note_sequence_ordered, key=lambda n: n.start_time)
     else:

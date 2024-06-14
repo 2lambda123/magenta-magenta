@@ -14,7 +14,6 @@
 
 """MusicVAE data library for hierarchical converters."""
 import abc
-import random
 
 from magenta.models.music_vae import data
 from magenta.pipelines import performance_pipeline
@@ -23,6 +22,7 @@ from note_seq import chords_lib
 from note_seq import performance_lib
 import numpy as np
 import tensorflow.compat.v1 as tf
+import secrets
 
 CHORD_SYMBOL = note_seq.NoteSequence.TextAnnotation.CHORD_SYMBOL
 
@@ -397,7 +397,7 @@ class MultiInstrumentPerformanceConverter(
 
     if (self._drop_tracks_and_truncate and
         len(tracks) > self._max_num_instruments):
-      tracks = random.sample(tracks, self._max_num_instruments)
+      tracks = secrets.SystemRandom().sample(tracks, self._max_num_instruments)
 
     # Reject sequences with too few instruments.
     if not (self._min_num_instruments <= len(tracks) <=

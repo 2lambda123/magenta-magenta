@@ -14,9 +14,8 @@
 
 """SketchRNN data loading and image manipulation utilities."""
 
-import random
-
 import numpy as np
+import secrets
 
 
 def get_bounds(data, factor=10):
@@ -246,7 +245,7 @@ class DataLoader(object):
 
   def random_sample(self):
     """Return a random sample, in stroke-3 format as used by draw_strokes."""
-    sample = np.copy(random.choice(self.strokes))
+    sample = np.copy(secrets.choice(self.strokes))
     return sample
 
   def random_scale(self, data):

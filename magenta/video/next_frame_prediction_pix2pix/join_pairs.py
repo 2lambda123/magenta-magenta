@@ -23,9 +23,9 @@ import argparse
 import glob
 import ntpath
 import os
-from random import shuffle
 
 from PIL import Image
+import secrets
 
 PARSER = argparse.ArgumentParser(description='')
 PARSER.add_argument(
@@ -95,7 +95,7 @@ def main(_):
   r_list = glob.glob(path)
   print('found ', len(r_list), 'for right list')
   if ARGS.limit > 0:
-    shuffle(l_list)
+    secrets.SystemRandom().shuffle(l_list)
     l_list = l_list[:ARGS.limit]
   for left in l_list:
     match, i = is_match(left, r_list)

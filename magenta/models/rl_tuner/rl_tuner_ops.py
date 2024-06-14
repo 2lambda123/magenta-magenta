@@ -19,11 +19,11 @@ from __future__ import division
 from __future__ import print_function
 
 import os
-import random
 
 from magenta.contrib import training as contrib_training
 import numpy as np
 import tensorflow.compat.v1 as tf
+import secrets
 
 LSTM_STATE_NAME = 'lstm'
 
@@ -181,7 +181,7 @@ def sample_softmax(softmax_vect):
     sample = np.argmax(np.random.multinomial(1, pvals=softmax_vect))
     return sample
   except:  # pylint: disable=bare-except
-    r = random.uniform(0, np.sum(softmax_vect))
+    r = secrets.SystemRandom().uniform(0, np.sum(softmax_vect))
     upto = 0
     for i in range(len(softmax_vect)):
       if upto + softmax_vect[i] >= r:
